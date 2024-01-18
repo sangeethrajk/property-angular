@@ -1,0 +1,116 @@
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.main-content {
+    padding: 1rem 2rem;
+}
+
+.heading {
+    color: #470A3C;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.background {
+    background-color: #FFC9FE;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.schemeFormGroup,
+.unitFormGroup,
+.schemeDataForm,
+.unitDataForm {
+    /* display: grid;
+    grid-template-columns: repeat(10, 1fr); */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.form-label {
+    font-size: 0.8rem;
+}
+
+.v_PLINTH_AREA,
+.v_UDS_AREA,
+.v_UNIT_TYPE,
+.n_TOTAL_UNITS {
+    width: 5rem;
+}
+
+.v_SCHEME_CODE,
+.v_DIVISION,
+.v_SPLACE,
+.v_DISTRICT,
+.v_PROJECT_STATUS,
+.n_SELLING_PRICE,
+.n_RATE_OF_SCHEME_INTEREST,
+.v_SELLING_EXTENT,
+.v_TENTATIVE_LAND,
+.n_TENTATIVE_LAND_COST,
+.n_FINAL_LAND_COST,
+.n_TOTAL_ARREARS_EMI,
+.n_TOTAL_CURRENT_EMI,
+.n_TOTAL_BALANCE_EMI,
+.n_TOTAL_NO_OF_SALE_DEED_ISSUED {
+    width: 10rem;
+}
+
+.v_REMARKS,
+.v_SCHEME_NAME {
+    width: 15rem;
+}
+
+.n_TOTAL_ALLOTTED_UNITS,
+.n_TOTAL_UNSOLD_UNITS,
+.n_TOTAL_ALLOTTED_UNITS_FOR_OUTRIGHT,
+.n_TOTAL_ALLOTTED_UNITS_FOR_HIRE_PURCHASE,
+.n_TOTAL_ALLOTTED_UNITS_FOR_SFS,
+.v_REPAYMENT_PERIOD {
+    width: 8rem;
+}
+
+.button {
+    grid-column: 1/3;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.back,
+.create {
+    margin: 0 0.5rem;
+}
+
+.editScheme {
+    display: flex;
+    justify-content: space-between;
+}
+
+.editScheme button {
+    height: 80%;
+}
+
+.label-ellipsis {
+    width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.schemeDataForm-edit,
+.unitDataForm-edit {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}

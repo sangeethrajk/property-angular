@@ -1,0 +1,155 @@
+<section class="main-content">
+  <div class="header-row">
+    <h3 class="sub-heading">Master Data</h3>
+  </div>
+
+  <div class="d-inline-flex" style="background-color: #06217B;padding: 1rem;border-radius: 10px;margin-bottom: 1rem;">
+    <div class="unitLabel">
+      Total Units<span class="unitNo">{{totalunits || 0}}</span>
+    </div>
+    <div class="unitLabel">
+      Created Units<span class="unitNo">{{allUnitDataSource.data.length || 0}}</span>
+    </div>
+    <div class="unitLabel">
+      Remaining Units<span class="unitNo">{{ (totalunits - allUnitDataSource.data.length) || 0 }}</span>
+    </div>
+    <div class="unitLabel">
+      Alloted Units<span class="unitNo">{{allotedunits || 0}}</span>
+    </div>
+    <div class="unitLabel">
+      Unsold Units<span class="unitNo">{{unsoldunits || 0}}</span>
+    </div>
+  </div>
+
+  <div class="filter-row mb-4">
+    <div>
+      <label for="search-input" class="label">Filter</label><br>
+      <div class="search-container">
+        <div>
+          <input matInput #input (keyup)="applyFilter($event)" type="text" id="search-input" class="search-input"
+            placeholder="Search...">
+          <div class="search-icon">
+            <mat-icon>search</mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button class="btn btn-light add-dataBtn" (click)="showCreateUnit()"
+        [disabled]="totalunits === allUnitDataSource.data.length">
+        <span><svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+            <path
+              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+          </svg></span>New Unit Data
+      </button>
+    </div>
+  </div>
+  <div>
+
+    <div class="shadow" style="background-color: #FFC9FE;border-radius: 10px; padding: 1rem;margin-bottom: 1rem;">
+      <form [formGroup]="schemeDataFormGroup" class="row g-2 mt-2">
+
+        <div class="col-3">
+          <label>Scheme Code</label>
+          <input class="form-control" type="text" formControlName="v_SCHEME_CODE" readonly>
+        </div>
+
+        <div class="col-2">
+          <label>Name of the Division</label>
+          <input class="form-control" type="text" formControlName="division" readonly>
+        </div>
+
+        <div class="col-5">
+          <label>Scheme Name</label>
+          <input class="form-control" type="text" formControlName="scheme_name" readonly>
+        </div>
+
+        <div class="col-1">
+          <label>Type</label>
+          <input class="form-control" type="text" formControlName="Type" readonly>
+        </div>
+
+        <div class="col-1">
+          <label for="unit_type">Unit Type</label>
+          <input class="form-control" type="text" formControlName="unit_type" readonly>
+        </div>
+      </form>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table mat-table [dataSource]="allUnitDataSource" matSort class="schemes-table">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="n_ID">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> S.No. </th>
+          <td mat-cell *matCellDef="let element"> {{element.serialNumber}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="v_UNIT_AC_NO">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit Account No </th>
+          <td mat-cell *matCellDef="let element"> {{element.v_UNIT_AC_NO}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="v_UNIT_ALLOTTED_STATUS">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Allotted Status</th>
+          <td mat-cell *matCellDef="let element"> {{element.v_UNIT_ALLOTTED_STATUS}} </td>
+        </ng-container>
+
+
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="v_UNIT_NO">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Unit No</th>
+          <td mat-cell *matCellDef="let element"> {{element.v_UNIT_NO}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="v_DATE_OF_ALLOTMENT">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date of Allotment</th>
+          <td mat-cell *matCellDef="let element"> {{element.v_DATE_OF_ALLOTMENT}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="v_UNIT_COST">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Unit Cost</th>
+          <td mat-cell *matCellDef="let element"> {{element.v_UNIT_COST}} </td>
+        </ng-container>
+
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="v_SALE_DEED_STATUS">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Sale deed Status</th>
+          <td mat-cell *matCellDef="let element"> {{element.v_SALE_DEED_STATUS}} </td>
+        </ng-container>
+
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="ACTION">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Action</th>
+          <td mat-cell *matCellDef="let element" class="p-0">
+            <div class="d-flex justify-content-evenly">
+              <a (click)="showViewUnit(element.n_ID)" style="color: #470A3C;cursor: pointer;"><span
+                  class="material-symbols-rounded">visibility</span></a>
+              <a (click)="showEditUnit(element.n_ID)" style="color: #470A3C;cursor: pointer;"><span
+                  class="material-symbols-rounded">edit</span></a>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="unitTableColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: unitTableColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data</td>
+        </tr>
+
+
+      </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
+
+</section>

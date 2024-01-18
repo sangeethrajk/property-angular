@@ -1,0 +1,384 @@
+<section class="main-content">
+    <h2 class="heading">Scheme & Unit Data</h2>
+
+    <div class="background">
+        <span style="font-weight: bold;font-size: 1rem;">Type Information</span>
+        <form [formGroup]="schemeFormGroup" class="schemeFormGroup">
+
+            <div class="v_DIVISION_CODE">
+                <label class="form-label" for="v_DIVISION_CODE">Division Code</label>
+                <input class="form-control" type="text" id="v_DIVISION_CODE" formControlName="v_DIVISION_CODE"
+                    maxlength="2" [readonly]="divisionCodeReadOnly" (input)="updateDivisionName()">
+            </div>
+
+            <div class="v_SCHEME_CODE">
+                <label class="form-label" for="v_SCHEME_CODE">Scheme & Type Code</label>
+                <input class="form-control" type="text" id="v_SCHEME_CODE" formControlName="v_SCHEME_CODE"
+                    maxlength="4">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_SCHEME_CODE')?.hasError('required') && (schemeFormGroup.get('v_SCHEME_CODE')?.touched || schemeFormGroup.get('v_SCHEME_CODE')?.dirty)">
+                    This field is required.
+                </div>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_SCHEME_CODE')?.hasError('pattern') && (schemeFormGroup.get('v_SCHEME_CODE')?.touched || schemeFormGroup.get('v_SCHEME_CODE')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_SCHEME_CODE')?.hasError('minlength') && (schemeFormGroup.get('v_SCHEME_CODE')?.touched || schemeFormGroup.get('v_SCHEME_CODE')?.dirty)">
+                    Must be exactly 4 characters long.
+                </div>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_SCHEME_CODE')?.hasError('maxlength') && (schemeFormGroup.get('v_SCHEME_CODE')?.touched || schemeFormGroup.get('v_SCHEME_CODE')?.dirty)">
+                    Must be exactly 4 characters long.
+                </div>
+            </div>
+
+            <div class="v_DIVISION">
+                <label class="form-label" for="v_DIVISION">Name of the Division</label>
+                <input class="form-control" type="text" id="v_DIVISION" formControlName="v_DIVISION" readonly>
+            </div>
+
+            <div class="v_SCHEME_NAME">
+                <label class="form-label" for="v_SCHEME_NAME">Scheme Name</label>
+                <input class="form-control" type="text" id="v_SCHEME_NAME" formControlName="v_SCHEME_NAME">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_SCHEME_NAME')?.hasError('required') && (schemeFormGroup.get('v_SCHEME_NAME')?.touched || schemeFormGroup.get('v_SCHEME_NAME')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="">
+                <label class="form-label">Type</label>
+                <select class="form-select" aria-label="Default select example" id="v_SCHEME_TYPE"
+                    formControlName="v_SCHEME_TYPE">
+                    <option selected>Select</option>
+                    <option value="HIG">HIG</option>
+                    <option value="MIG">MIG</option>
+                    <option value="LIG">LIG</option>
+                    <option value="EWS">EWS</option>
+                </select>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_SCHEME_TYPE')?.hasError('required') && (schemeFormGroup.get('v_SCHEME_TYPE')?.touched || schemeFormGroup.get('v_SCHEME_TYPE')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="v_UNIT_TYPE">
+                <label class="form-label" for="v_UNIT_TYPE">Unit Type</label>
+                <select class="form-select" id="v_UNIT_TYPE" formControlName="v_UNIT_TYPE">
+                    <option value="Flat">Flat</option>
+                    <option value="House">House</option>
+                    <option value="Plot">Plot</option>
+                </select>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_UNIT_TYPE')?.hasError('required') && (schemeFormGroup.get('v_UNIT_TYPE')?.touched || schemeFormGroup.get('v_UNIT_TYPE')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="n_TOTAL_UNITS">
+                <label class="form-label" for="n_TOTAL_UNITS">Total Units</label>
+                <input class="form-control" type="text" id="n_TOTAL_UNITS" formControlName="n_TOTAL_UNITS">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('n_TOTAL_UNITS')?.hasError('required') && (schemeFormGroup.get('n_TOTAL_UNITS')?.touched || schemeFormGroup.get('n_TOTAL_UNITS')?.dirty)">
+                    This field is required.
+                </div>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('n_TOTAL_UNITS')?.hasError('pattern') && (schemeFormGroup.get('n_TOTAL_UNITS')?.touched || schemeFormGroup.get('n_TOTAL_UNITS')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="v_SPLACE">
+                <label class="form-label" for="v_SPLACE">Scheme place</label>
+                <input class="form-control" type="text" id="v_SPLACE" formControlName="v_SPLACE">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_SPLACE')?.hasError('required') && (schemeFormGroup.get('v_SPLACE')?.touched || schemeFormGroup.get('v_SPLACE')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="v_DISTRICT">
+                <label class="form-label" for="v_DISTRICT">District</label>
+                <select class="form-select" formControlName="v_DISTRICT">
+                    <option *ngFor="let district of districts" [value]="district">{{district}}</option>
+                </select>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_DISTRICT')?.hasError('required') && (schemeFormGroup.get('v_DISTRICT')?.touched || schemeFormGroup.get('v_DISTRICT')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="">
+                <label class="form-label" for="">Reservation</label>
+                <select class="form-select" id="v_RESERVATION_STATUS" formControlName="v_RESERVATION_STATUS">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_RESERVATION_STATUS')?.hasError('required') && (schemeFormGroup.get('v_RESERVATION_STATUS')?.touched || schemeFormGroup.get('v_RESERVATION_STATUS')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="" *ngIf="schemeFormGroup.get('v_RESERVATION_STATUS')?.value === 'Yes'">
+                <label class="form-label" for="d_FROM_DATE">From Date</label>
+                <input class="form-control" type="date" id="v_FROM_DATE" formControlName="v_FROM_DATE"
+                    (change)="updateToDate($event)">
+            </div>
+
+            <div class="" *ngIf="schemeFormGroup.get('v_RESERVATION_STATUS')?.value === 'Yes'">
+                <label class="form-label" for="d_TO_DATE">To Date</label>
+                <input class="form-control" type="date" id="v_TO_DATE" formControlName="v_TO_DATE" readonly>
+            </div>
+
+            <div class="v_PROJECT_STATUS">
+                <label class="form-label" for="v_PROJECT_STATUS">Project Status</label>
+                <select class="form-select" id="v_PROJECT_STATUS" formControlName="v_PROJECT_STATUS">
+                    <option value="Yet to be Started">Yet to be Started</option>
+                    <option value="Ongoing">Ongoing</option>
+                    <option value="Completed">Completed</option>
+                </select>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_PROJECT_STATUS')?.hasError('required') && (schemeFormGroup.get('v_PROJECT_STATUS')?.touched || schemeFormGroup.get('v_PROJECT_STATUS')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="v_WHETHER_HP" *ngIf="schemeFormGroup.get('v_PROJECT_STATUS')?.value ==='Completed'">
+                <label class="form-label" for="v_WHETHER_HP">Whether HP needed?</label>
+                <select class="form-select" id="v_WHETHER_HP" formControlName="v_WHETHER_HP">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="">
+                <label class="form-label" for="v_CUT_OFF_DATE">Cut-off Date (SP)</label>
+                <input class="form-control" type="date" id="v_CUT_OFF_DATE" formControlName="v_CUT_OFF_DATE">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_CUT_OFF_DATE')?.hasError('required') && (schemeFormGroup.get('v_CUT_OFF_DATE')?.touched || schemeFormGroup.get('v_CUT_OFF_DATE')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="n_SELLING_PRICE">
+                <label class="form-label" for="n_SELLING_PRICE">Original Selling Price (₹)</label>
+                <input class="form-control" type="text" id="n_SELLING_PRICE" formControlName="n_SELLING_PRICE">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('n_SELLING_PRICE')?.hasError('required') && (schemeFormGroup.get('n_SELLING_PRICE')?.touched || schemeFormGroup.get('n_SELLING_PRICE')?.dirty)">
+                    This field is required.
+                </div>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('n_SELLING_PRICE')?.hasError('pattern') && (schemeFormGroup.get('n_SELLING_PRICE')?.touched || schemeFormGroup.get('n_SELLING_PRICE')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="n_RATE_OF_SCHEME_INTEREST">
+                <label class="form-label" for="n_RATE_OF_SCHEME_INTEREST">Scheme Interest (%)</label>
+                <input class="form-control" type="text" id="n_RATE_OF_SCHEME_INTEREST"
+                    formControlName="n_RATE_OF_SCHEME_INTEREST" maxlength="2">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('n_RATE_OF_SCHEME_INTEREST')?.hasError('required') && (schemeFormGroup.get('n_RATE_OF_SCHEME_INTEREST')?.touched || schemeFormGroup.get('n_RATE_OF_SCHEME_INTEREST')?.dirty)">
+                    This field is required.
+                </div>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('n_RATE_OF_SCHEME_INTEREST')?.hasError('pattern') && (schemeFormGroup.get('n_RATE_OF_SCHEME_INTEREST')?.touched || schemeFormGroup.get('n_RATE_OF_SCHEME_INTEREST')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="v_REPAYMENT_PERIOD">
+                <label class="form-label" class="label-ellipsis" for="v_REPAYMENT_PERIOD" data-toggle="tooltip"
+                    data-placement="top" title="Repayment Period (Years)">Repayment Period (Years)</label>
+                <input class="form-control" type="text" id="v_REPAYMENT_PERIOD" formControlName="v_REPAYMENT_PERIOD">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_REPAYMENT_PERIOD')?.hasError('required') && (schemeFormGroup.get('v_REPAYMENT_PERIOD')?.touched || schemeFormGroup.get('v_REPAYMENT_PERIOD')?.dirty)">
+                    This field is required.
+                </div>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_REPAYMENT_PERIOD')?.hasError('pattern') && (schemeFormGroup.get('v_REPAYMENT_PERIOD')?.touched || schemeFormGroup.get('v_REPAYMENT_PERIOD')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="v_SELLING_EXTENT" *ngIf="schemeFormGroup.get('v_UNIT_TYPE')?.value !== 'Flat'">
+                <label class="form-label" for="v_SELLING_EXTENT">Selling
+                    Extent</label>
+                <input class="form-control" type="text" id="v_SELLING_EXTENT" formControlName="v_SELLING_EXTENT">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_SELLING_EXTENT')?.hasError('pattern') && (schemeFormGroup.get('v_SELLING_EXTENT')?.touched || schemeFormGroup.get('v_SELLING_EXTENT')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="v_PLINTH_AREA" *ngIf="schemeFormGroup.get('v_UNIT_TYPE')?.value !== 'Plot'">
+                <label class="form-label" for="v_PLINTH_AREA">Plinth Area</label>
+                <input class="form-control" type="text" id="v_PLINTH_AREA" formControlName="v_PLINTH_AREA">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_PLINTH_AREA')?.hasError('pattern') && (schemeFormGroup.get('v_PLINTH_AREA')?.touched || schemeFormGroup.get('v_PLINTH_AREA')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="v_UDS_AREA"
+                *ngIf="schemeFormGroup.get('v_UNIT_TYPE')?.value !== 'House' && schemeFormGroup.get('v_UNIT_TYPE')?.value !== 'Plot'">
+                <label class="form-label" for="v_UDS_AREA">UDS</label>
+                <input class="form-control" type="text" id="v_UDS_AREA" formControlName="v_UDS_AREA">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_UDS_AREA')?.hasError('pattern') && (schemeFormGroup.get('v_UDS_AREA')?.touched || schemeFormGroup.get('v_UDS_AREA')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="v_TENTATIVE_LAND">
+                <label class="form-label" for="v_TENTATIVE_LAND">Tentative Land</label>
+                <select class="form-select" id="v_TENTATIVE_LAND" formControlName="v_TENTATIVE_LAND">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_TENTATIVE_LAND')?.hasError('required') && (schemeFormGroup.get('v_TENTATIVE_LAND')?.touched || schemeFormGroup.get('v_TENTATIVE_LAND')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="">
+                <label class="form-label" for="v_FINAL_LAND">Final Land</label>
+                <select class="form-select" id="v_FINAL_LAND" formControlName="v_FINAL_LAND">
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('v_FINAL_LAND')?.hasError('required') && (schemeFormGroup.get('v_FINAL_LAND')?.touched || schemeFormGroup.get('v_FINAL_LAND')?.dirty)">
+                    This field is required.
+                </div>
+            </div>
+
+            <div class="n_TENTATIVE_LAND_COST">
+                <label class="form-label" for="n_TENTATIVE_LAND_COST">Tentative Land Cost (₹)</label>
+                <input class="form-control" type="text" id="n_TENTATIVE_LAND_COST"
+                    formControlName="n_TENTATIVE_LAND_COST">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('n_TENTATIVE_LAND_COST')?.hasError('pattern') && (schemeFormGroup.get('n_TENTATIVE_LAND_COST')?.touched || schemeFormGroup.get('n_TENTATIVE_LAND_COST')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="n_FINAL_LAND_COST">
+                <label class="form-label" for="n_FINAL_LAND_COST">Final Land Cost (₹)</label>
+                <input class="form-control" type="text" id="n_FINAL_LAND_COST" formControlName="n_FINAL_LAND_COST">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('n_FINAL_LAND_COST')?.hasError('pattern') && (schemeFormGroup.get('n_FINAL_LAND_COST')?.touched || schemeFormGroup.get('n_FINAL_LAND_COST')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="">
+                <label class="form-label" for="v_FINAL_CUTOFF_DATE">FLC Cut-off Date</label>
+                <input class="form-control" type="date" id="v_FINAL_CUTOFF_DATE" formControlName="v_FINAL_CUTOFF_DATE">
+            </div>
+
+            <div class="">
+                <label class="form-label" for="n_PROFIT_ON_LAND">Profit (₹)</label>
+                <input class="form-control" type="text" id="n_PROFIT_ON_LAND" formControlName="n_PROFIT_ON_LAND"
+                    maxlength="2">
+                <div class="text-danger"
+                    *ngIf="schemeFormGroup.get('n_PROFIT_ON_LAND')?.hasError('pattern') && (schemeFormGroup.get('n_PROFIT_ON_LAND')?.touched || schemeFormGroup.get('n_PROFIT_ON_LAND')?.dirty)">
+                    Only numbers are allowed.
+                </div>
+            </div>
+
+            <div class="v_REMARKS">
+                <label class="form-label" for="v_REMARKS">Remarks</label>
+                <textarea class="form-control" type="text" id="v_REMARKS" formControlName="v_REMARKS"></textarea>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="background">
+        <span style="font-weight: bold;font-size: medium;">Type Updated Value</span>
+        <form [formGroup]="unitFormGroup" class="unitFormGroup">
+
+            <div class="n_TOTAL_ALLOTTED_UNITS">
+                <label class="form-label" for="n_TOTAL_ALLOTTED_UNITS">Allotted Units</label>
+                <input class="form-control" type="text" id="n_TOTAL_ALLOTTED_UNITS"
+                    formControlName="n_TOTAL_ALLOTTED_UNITS" readonly>
+            </div>
+
+            <div class="n_TOTAL_UNSOLD_UNITS">
+                <label class="form-label" for="n_TOTAL_UNSOLD_UNITS">Unsold Units</label>
+                <input class="form-control" type="text" id="n_TOTAL_UNSOLD_UNITS" formControlName="n_TOTAL_UNSOLD_UNITS"
+                    readonly>
+            </div>
+
+            <div class="n_TOTAL_ALLOTTED_UNITS_FOR_OUTRIGHT">
+                <label class="form-label" for="n_TOTAL_ALLOTTED_UNITS_FOR_OUTRIGHT">OR Alotted</label>
+                <input class="form-control" type="text" id="n_TOTAL_ALLOTTED_UNITS_FOR_OUTRIGHT"
+                    formControlName="n_TOTAL_ALLOTTED_UNITS_FOR_OUTRIGHT" readonly>
+            </div>
+
+            <div class="n_TOTAL_ALLOTTED_UNITS_FOR_HIRE_PURCHASE">
+                <label class="form-label" for="n_TOTAL_ALLOTTED_UNITS_FOR_HIRE_PURCHASE">HP Allotted</label>
+                <input class="form-control" type="text" id="n_TOTAL_ALLOTTED_UNITS_FOR_HIRE_PURCHASE"
+                    formControlName="n_TOTAL_ALLOTTED_UNITS_FOR_HIRE_PURCHASE" readonly>
+            </div>
+
+            <div class="n_TOTAL_ALLOTTED_UNITS_FOR_SFS">
+                <label class="form-label" for="n_TOTAL_ALLOTTED_UNITS_FOR_SFS">SFS Allotted</label>
+                <input class="form-control" type="text" id="n_TOTAL_ALLOTTED_UNITS_FOR_SFS"
+                    formControlName="n_TOTAL_ALLOTTED_UNITS_FOR_SFS" readonly>
+            </div>
+
+            <div class="n_TOTAL_ARREARS_EMI">
+                <label class="form-label" for="n_TOTAL_ARREARS_EMI">Arrear EMI</label>
+                <input class="form-control" type="text" id="n_TOTAL_ARREARS_EMI" formControlName="n_TOTAL_ARREARS_EMI"
+                    readonly>
+            </div>
+
+            <div class="n_TOTAL_CURRENT_EMI">
+                <label class="form-label" for="n_TOTAL_CURRENT_EMI">Current EMI</label>
+                <input class="form-control" type="text" id="n_TOTAL_CURRENT_EMI" formControlName="n_TOTAL_CURRENT_EMI"
+                    readonly>
+            </div>
+
+            <div class="n_TOTAL_BALANCE_EMI">
+                <label class="form-label" for="n_TOTAL_BALANCE_EMI">Balance EMI</label>
+                <input class="form-control" type="text" id="n_TOTAL_BALANCE_EMI" formControlName="n_TOTAL_BALANCE_EMI"
+                    readonly>
+            </div>
+
+            <div class="">
+                <label class="form-label" for="n_TOTAL_LIVE_CASES_FOR_HIRE">Live Units</label>
+                <input class="form-control" type="text" id="n_TOTAL_LIVE_CASES_FOR_HIRE"
+                    formControlName="n_TOTAL_LIVE_CASES_FOR_HIRE" readonly>
+            </div>
+
+            <div class="">
+                <label class="form-label" for="n_FULL_COST_PAID">Full cost paid</label>
+                <input class="form-control" type="text" id="n_FULL_COST_PAID" formControlName="n_FULL_COST_PAID"
+                    readonly>
+            </div>
+
+            <div class="n_TOTAL_NO_OF_SALE_DEED_ISSUED">
+                <label class="form-label" for="n_TOTAL_NO_OF_SALE_DEED_ISSUED">Sale Deed Issued</label>
+                <input class="form-control" type="text" id="n_TOTAL_NO_OF_SALE_DEED_ISSUED"
+                    formControlName="n_TOTAL_NO_OF_SALE_DEED_ISSUED" readonly>
+            </div>
+
+            <div class="">
+                <label class="form-label" for="n_TOTAL_RIPPED_UNIT">Ripe Units</label>
+                <input class="form-control" type="text" id="n_TOTAL_RIPPED_UNIT" formControlName="n_TOTAL_RIPPED_UNIT"
+                    readonly>
+            </div>
+        </form>
+    </div>
+
+    <div class="button">
+        <button type="submit" class="btn create" style="background-color: #470A3C;color: white;"
+            (click)="onSubmit()">Create</button>
+    </div>
+
+</section>

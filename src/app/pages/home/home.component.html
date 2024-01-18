@@ -1,0 +1,50 @@
+<div class="home-container" [class.home-is-mobile]="mobileQuery.matches">
+    <mat-toolbar class="home-toolbar">
+        <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+        <img src="../../../assets/images/tnhb_logo.png" alt="tnhb_logo" class="img-fluid" id="tnhb-logo">
+        <span class="home-spacer"></span>
+        <div style="display: flex;align-items: center;">
+            <span style="font-size: 1rem;margin-right: 5px;">{{username}}</span>
+            <mat-icon>account_circle</mat-icon>
+        </div>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="home-sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav #snav [mode]="mobileQuery.matches ? 'over' : 'side'" opened="true"
+            [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+            <mat-nav-list>
+                <mat-list-item>
+                    <button routerLink="all-schemes" routerLinkActive="active" mat-button><mat-icon>home</mat-icon>
+                        Home
+                    </button>
+                </mat-list-item>
+                <!-- <mat-list-item>
+                    <button routerLink="create-website" routerLink="/property/home/website" (click)="showCreateWebsite()"  routerLinkActive="active" mat-button><mat-icon>add_box</mat-icon>
+                        Website Data
+                    </button>
+                </mat-list-item> -->
+
+                <mat-list-item *ngIf="false">
+                    <button routerLink="application" routerLink="/property/home/application" routerLinkActive="active"
+                        mat-button><mat-icon>add_box</mat-icon>
+                        Application
+                    </button>
+                </mat-list-item>
+                <mat-list-item *ngIf="false">
+                    <button routerLink="/property/home/report" routerLinkActive="active" mat-button>
+                        Report
+                    </button>
+                </mat-list-item>
+                <mat-list-item>
+                    <button (click)="logout()" routerLinkActive="active" mat-button>
+                        Logout
+                    </button>
+                </mat-list-item>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content class="main-content">
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

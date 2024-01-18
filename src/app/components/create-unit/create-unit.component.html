@@ -1,0 +1,1081 @@
+<section class="main-content">
+
+  <div class="d-flex justify-content-between align-items-center background">
+    <section class="tab-container">
+      <button class="btn btn-light tab-button" [class.active]="selectedTab === 'Unit'"
+        (click)="selectTab('Unit')">Master - Unit</button>
+      <button class="btn btn-light tab-button" [class.active]="selectedTab === 'sfs'" (click)="selectTab('sfs')"
+        [disabled]="UnitDataFormGroup.get('v_MODE_OF_ALLOTMENT')!.value !== 'SFS'">Schedule of Payment</button>
+      <button class="btn btn-light tab-button" [class.active]="selectedTab === 'Property'"
+        (click)="selectTab('Property')">Schedule of Property</button>
+      <button class="btn btn-light tab-button" [class.active]="selectedTab === 'Allottee'"
+        (click)="selectTab('Allottee')">Allottee Details</button>
+    </section>
+    <section>
+      <nav class="nav nav-pills nav-justified">
+        <button class="btn btn-light tab-button active" (click)="onSubmit()">Create</button>
+      </nav>
+    </section>
+  </div>
+
+  <section class="tab-content">
+    <div *ngIf="selectedTab === 'Unit'">
+      <div class="shadow background">
+        <div class="d-inline-flex"
+          style="background-color: #06217B;padding: 1rem;border-radius: 10px;margin-bottom: 1rem;">
+          <div class="unitLabel">
+            Total Units<span class="unitNo">{{totalunits}}</span>
+          </div>
+          <div class="unitLabel">
+            Created Units<span class="unitNo">{{allunits.length || 0}}</span>
+          </div>
+          <div class="unitLabel">
+            Remaining Units<span class="unitNo">{{ (totalunits - allunits.length) || 0 }}</span>
+          </div>
+        </div>
+        <form [formGroup]="UnitDataFormGroup" class="UnitDataFormGroup">
+          <div class="">
+            <label>Scheme Code</label>
+            <input class="form-control" type="text" formControlName="v_SCHEME_CODE" readonly>
+          </div>
+
+          <div class="">
+            <label>Unit Account Number</label>
+            <input class="form-control" type="text" formControlName="v_UNIT_ACCOUNT_NUMBER" required maxlength="6">
+            <div class="text-danger"
+              *ngIf="UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.hasError('required') && (UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.touched || UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.dirty)">
+              This field is required.
+            </div>
+            <div class="text-danger"
+              *ngIf="UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.hasError('pattern') && (UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.touched || UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.dirty)">
+              Only numbers are allowed.
+            </div>
+            <div class="text-danger"
+              *ngIf="UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.hasError('minlength') && (UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.touched || UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.dirty)">
+              Must be exactly 6 characters long.
+            </div>
+            <div class="text-danger"
+              *ngIf="UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.hasError('maxlength') && (UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.touched || UnitDataFormGroup.get('v_UNIT_ACCOUNT_NUMBER')?.dirty)">
+              Must be exactly 6 characters long.
+            </div>
+          </div>
+
+          <div class="">
+            <label>Name of the Division</label>
+            <input class="form-control" type="text" formControlName="v_DIVISION" readonly>
+          </div>
+
+          <div class="">
+            <label>Scheme Name</label>
+            <input class="form-control" type="text" formControlName="v_SCHEME_NAME" readonly>
+          </div>
+
+          <div class="Type">
+            <label>Type</label>
+            <input class="form-control" type="text" formControlName="v_TYPE_NAME" readonly>
+          </div>
+
+          <div class="unit_type">
+            <label>Unit Type</label>
+            <input class="form-control" type="text" formControlName="v_ASSET_TYPE" readonly>
+          </div>
+
+          <div class="Mode_of_Allotment">
+            <label class="" for="v_MODE_OF_ALLOTMENT">Mode of Allotment</label>
+            <select class="form-select" formControlName="v_MODE_OF_ALLOTMENT">
+              <option value="SFS">SFS</option>
+              <option value="OR">OR</option>
+              <option value="HP">HP</option>
+            </select>
+          </div>
+
+          <div class="v_UNIT_NO">
+            <label>Unit No</label>
+            <input class="form-control" type="text" formControlName="v_UNIT_NO">
+          </div>
+
+          <div class="v_BLOCK_NO" *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value === 'Flat'">
+            <label>Block No</label>
+            <input class="form-control" type="text" formControlName="v_BLOCK_NO">
+          </div>
+
+          <div class="v_FLOOR_NO" *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value === 'Flat'">
+            <label>Floor No</label>
+            <input class="form-control" type="text" formControlName="v_FLOOR_NO">
+          </div>
+
+          <div class="v_FLAT_NO" *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value === 'Flat'">
+            <label>Flat No</label>
+            <input class="form-control" type="text" formControlName="v_FLAT_NO">
+          </div>
+
+          <div class="v_PLINTH_AREA" *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value === 'Flat'">
+            <label>Plinth Area</label>
+            <input class="form-control" type="text" formControlName="v_PLINTH_AREA">
+          </div>
+
+          <div class="v_UDS_AREA" *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value === 'Flat'">
+            <label>UDS</label>
+            <input class="form-control" type="text" formControlName="v_UDS_AREA">
+          </div>
+
+          <div class="">
+            <label>GDQ</label>
+            <select class="form-select" formControlName="gdq">
+              <option value="Yes">Yes</option>
+              <option value="No" selected>No</option>
+            </select>
+          </div>
+
+          <div class="">
+            <label>Reservation Category</label>
+            <div class="input-group">
+              <div class="input-group-text"></div>
+              <input type="text" class="form-control" formControlName="v_RESERVATION_CATEGORY" readonly>
+            </div>
+          </div>
+
+          <div class="">
+            <label>Priority Basis</label>
+            <div class="input-group">
+              <div class="input-group-text"></div>
+              <input type="text" class="form-control" formControlName="v_PRIORITY" readonly>
+            </div>
+          </div>
+
+          <div class="">
+            <label>Alloted Status</label>
+            <select class="form-select" formControlName="v_UNIT_ALLOTTED_STATUS">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div class="">
+            <label>CATEGORY</label>
+            <select class="form-select" formControlName="v_CATEGORY">
+              <option value="S">S</option>
+              <option value="O">O</option>
+            </select>
+          </div>
+
+          <div class="">
+            <label>Date of Allotment</label>
+            <input class="form-control" type="date" formControlName="v_DATE_OF_ALLOTMENT" readonly>
+          </div>
+
+          <div class="">
+            <label>Unit Cost (₹)</label>
+            <input class="form-control" type="number" formControlName="v_UNIT_COST">
+          </div>
+
+          <div class="">
+            <label>Freezed Rate</label>
+            <select class="form-select" formControlName="v_FREEZED_DATE">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div class="" *ngIf="UnitDataFormGroup.get('v_MODE_OF_ALLOTMENT')?.value === 'HP'">
+            <label>Initial Deposit</label>
+            <input class="form-control" type="number" formControlName="v_INITIAL_DEPOSIT">
+          </div>
+
+          <div class="" *ngIf="UnitDataFormGroup.get('v_MODE_OF_ALLOTMENT')?.value === 'HP'">
+            <label>EMI</label>
+            <input class="form-control" type="number" formControlName="v_EMI">
+          </div>
+
+          <div class="" *ngIf="UnitDataFormGroup.get('v_MODE_OF_ALLOTMENT')?.value === 'HP'">
+            <label>EMI Start Date</label>
+            <input class="form-control" type="date" formControlName="v_EMI_START_DATE">
+          </div>
+
+          <div class="">
+            <label>Unit Ready Date</label>
+            <input class="form-control" type="date" formControlName="v_UNIT_READY_DATE">
+          </div>
+
+          <!-- <div class="">
+            <label class=""
+              title="{{UnitDataFormGroup.get('v_MODE_OF_ALLOTMENT')!.value === 'HP' ? 'ID Due Date' : (UnitDataFormGroup.get('v_MODE_OF_ALLOTMENT')!.value === 'OR' ? 'Payment Due Date' : 'ID Due Date')}}">{{
+              UnitDataFormGroup.get('v_MODE_OF_ALLOTMENT')!.value === 'HP' ? 'ID Due Date' :
+              (UnitDataFormGroup.get('v_MODE_OF_ALLOTMENT')!.value === 'OR' ? 'Payment Due Date' : 'ID Due Date')
+              }}</label>
+            <input class="form-control" type="date" formControlName="v_ID_DUE_DATE_HP" readonly>
+          </div> -->
+
+          <div class="" *ngIf="UnitDataFormGroup.get('v_MODE_OF_ALLOTMENT')?.value === 'OR'">
+            <label>Payment Due Date</label>
+            <input class="form-control" type="date" formControlName="v_PAYMENT_DUE_DATE" readonly>
+          </div>
+
+          <div class="">
+            <label>SF loan SG</label>
+            <select class="form-select" formControlName="v_SF_LOAN_SG">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div class="">
+            <label>A&B Issued Date</label>
+            <input class="form-control" type="date" formControlName="v_AB_ISSUED_DATE" readonly>
+          </div>
+
+          <div class="">
+            <label class="" data-toggle="tooltip" data-placement="top" title="Loan Sanc.Date">Loan
+              Sanc.Date</label>
+            <input class="form-control" type="date" formControlName="v_LOAN_SANC_DATE">
+          </div>
+
+          <div class=""
+            *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value === 'Flat' || UnitDataFormGroup.get('v_ASSET_TYPE')?.value === 'House'">
+            <label class="">Unit Handing Over</label>
+            <input class="form-control" type="date" formControlName="v_UNIT_HANDING_OVER">
+          </div>
+
+          <div class="" *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value === 'Plot'">
+            <label>Plot Handing Over</label>
+            <input class="form-control" type="date" formControlName="v_PLOT_HANDING_OVER">
+          </div>
+
+          <div class="" *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value !== 'Flat'">
+            <label>Actual Extent</label>
+            <input class="form-control" type="text" formControlName="v_ACTUAL_EXTENT">
+          </div>
+
+          <div class="" *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value !== 'Flat'">
+            <label>Road facing</label>
+            <select class="form-select" formControlName="v_ROAD_FACING">
+              <option value="NB">NB</option>
+              <option value="SF">SF</option>
+              <option value="EF">EF</option>
+            </select>
+          </div>
+
+          <div class="" *ngIf="UnitDataFormGroup.get('v_ASSET_TYPE')?.value !== 'Flat'">
+            <label>Corner</label>
+            <select class="form-select" formControlName="v_CORNER_PLOT_STATUS">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div class="">
+            <label>Door Facing</label>
+            <select class="form-select" formControlName="v_DOOR_FACING">
+              <option value="N">N</option>
+              <option value="E">E</option>
+              <option value="W">W</option>
+              <option value="S">S</option>
+            </select>
+          </div>
+
+          <div class="" style="width:5rem">
+            <label>Live Status</label>
+            <input class="form-control" type="text" formControlName="v_LIVE_STATUS" readonly>
+          </div>
+
+          <div class="" style="width:6rem">
+            <label>Riped Status</label>
+            <input class="form-control" type="text" formControlName="v_RIPED_STATUS" readonly>
+          </div>
+
+          <div class="" style="width:6rem">
+            <label class="" data-toggle="tooltip" data-placement="top" title="FC Paid Status">FC Paid
+              Status</label>
+            <input class="form-control" type="text" formControlName="v_FC_PAID_STATUS" readonly>
+          </div>
+
+          <div class="">
+            <label>Draft Deed Issued on</label>
+            <input class="form-control" type="date" formControlName="v_DRAFT_DEED_ISSUED_ON" readonly>
+          </div>
+
+          <div class="">
+            <label>FC paid but Sales Deed not issued(Reason)</label>
+            <select class="form-select" formControlName="v_FC_PAID_BUT_SALE_DEED_NOT_ISSUED">
+              <option value="legal_heirs_issue">Legal Heirs Issue</option>
+              <option value="power_of_attorney_subsequent_purchaser">Power of Attorney/Subsequent Purchaser</option>
+              <option value="noc_from_govt">NOC from Govt</option>
+              <option value="intimation_sent_but_returned">Intimation sent but returned</option>
+              <option value="intimation_received_but_allottee_not_turned_up">Intimation received but allottee not turned
+                up</option>
+              <option value="high_stamp_duty">High Stamp Duty</option>
+              <option value="living_abroad">Living Abroad</option>
+              <option value="court_cases">Court Cases</option>
+              <option value="recently_paid_and_sale_deed_under_process">Recently Paid and Sale Deed Under Process
+              </option>
+              <option value="draft_sale_deed_issued">Draft Sale Deed Issued</option>
+            </select>
+          </div>
+
+          <div class="">
+            <label>MC Demand(PM) (₹)</label>
+            <input class="form-control" type="text" formControlName="v_MC_DEMAND">
+          </div>
+
+          <div class="">
+            <label>Maintainence H/O Date</label>
+            <input class="form-control" type="date" formControlName="maintenance_DATE">
+          </div>
+
+          <div class="">
+            <label>Car Parking Demand (₹)</label>
+            <input class="form-control" type="text" formControlName="v_CAR_DEMAND">
+          </div>
+
+          <div class="">
+            <label>Car Parking Slot 1</label>
+            <input class="form-control" type="text" formControlName="v_CAR_SLOT_1">
+          </div>
+
+          <div class="">
+            <label>Car Parking Slot 2</label>
+            <input class="form-control" type="text" formControlName="v_CAR_SLOT_2">
+          </div>
+
+          <div class="">
+            <label>Ripe but cost not fully paid(Reason)</label>
+            <select class="form-select" formControlName="v_RIPED_BUT_COST_NOT_FULLY_PAID">
+              <option value="court_case_dlc_due">Court Case - DLC Due</option>
+              <option value="sfs_dlc_due">SFS - DLC Due</option>
+              <option value="general_public_dlc_due">General Public - DLC Due</option>
+              <option value="government_servant_dlc_due">Government Servant - DLC Due</option>
+              <option value="intimation_received_but_allottee_not_turned_up">Intimation received but allottee not turned
+                up</option>
+              <option value="subsequent_purchaser">Subsequent Purchaser</option>
+              <option value="power_of_attorney">Power of Attorney</option>
+              <option value="allottee_not_traceable">Allottee Not Traceable</option>
+              <option value="court_case">Court Case</option>
+              <option value="draft_sale_deed_issued">Draft Sale Deed Issued</option>
+            </select>
+          </div>
+
+          <div class="">
+            <label>Sale Deed Status</label>
+            <select class="form-select" formControlName="v_SALE_DEED_STATUS">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+
+          <div class="" *ngIf="UnitDataFormGroup.get('v_SALE_DEED_STATUS')?.value === 'Yes'">
+            <label>Sale Deed Date</label>
+            <input class="form-control" type="date" formControlName="v_SALE_DEED_DATE">
+          </div>
+
+        </form>
+      </div>
+
+      <div class="shadow background" style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <label>Field Measurement Book</label>
+          <input class="form-control" type="file" accept=".pdf"
+            (change)="onFileSelected($event, 'fieldMeasurementBook')">
+        </div>
+        <div>
+          <label>Layout</label>
+          <input class="form-control" type="file" accept=".pdf" (change)="onFileSelected($event, 'layout')">
+        </div>
+      </div>
+
+      <div class="shadow background" style="display: flex;flex-wrap: wrap;gap: 10px;">
+        <p class="" style="font-weight: bold;font-size: 1rem;width: 100%;">Generate Documents</p>
+        <div class="">
+          <label>Application</label>
+          <div>
+            <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+          </div>
+        </div>
+
+        <div class="">
+          <label>Allotment Order</label>
+          <div>
+            <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+          </div>
+        </div>
+
+        <div class="">
+          <label>LCS Agreement</label>
+          <div>
+            <button class="form-control btn download-btn" style="width: 6rem;">Generate</button>
+          </div>
+        </div>
+
+        <div class="">
+          <label>A & B Loan</label>
+          <div>
+            <button class="form-control btn download-btn" style="width: 6rem;">Generate</button>
+          </div>
+        </div>
+
+        <div class="">
+          <label>Handing over Report</label>
+          <div>
+            <button class="form-control btn download-btn" style="width: 6rem;">Generate</button>
+          </div>
+        </div>
+
+        <div class="">
+          <label>Draft Sale Deed</label>
+          <div>
+            <button class="form-control btn download-btn" style="width: 6rem;">Generate</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="shadow background" style="display: flex;flex-wrap: wrap;gap: 10px;">
+        <p style="font-weight: bold;font-size: 1rem;width: 100%;">Documents Download</p>
+        <div class="">
+          <label>In Principal letter for Loan</label>
+          <div>
+            <button class="form-control btn download-btn" style="width: 7rem;">Download</button>
+          </div>
+        </div>
+
+        <div class="">
+          <label>NOC (Govt./Bank/Financial Institutions)</label>
+          <div>
+            <button class="form-control btn download-btn" style="width: 7rem;">Download</button>
+          </div>
+        </div>
+
+        <div class="">
+          <label>Sale Deed Requisition Letter</label>
+          <div>
+            <button class="form-control btn download-btn" style="width: 7rem;">Download</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="tab-content">
+    <div *ngIf="selectedTab === 'sfs'">
+
+      <div class="shadow" style="background-color: #FFC9FE;border-radius: 10px; padding: 1rem;margin-bottom: 1rem;">
+        <form [formGroup]="UnitDataFormGroup" class="row g-2 mt-2">
+
+          <div class="col-3">
+            <label>Unit Account Number</label>
+            <input class="form-control" type="text" formControlName="v_UNIT_ACCOUNT_NUMBER" readonly>
+          </div>
+
+          <div class="col-2">
+            <label>Name of the Division</label>
+            <input class="form-control" type="text" formControlName="v_DIVISION" readonly>
+          </div>
+
+          <div class="col-5">
+            <label>Scheme Name</label>
+            <input class="form-control" type="text" formControlName="v_SCHEME_NAME" readonly>
+          </div>
+
+          <div class="col-1">
+            <label>Type</label>
+            <input class="form-control" type="text" formControlName="v_TYPE_NAME" readonly>
+          </div>
+
+          <div class="col-1">
+            <label for="unit_type">Unit Type</label>
+            <input class="form-control" type="text" formControlName="v_ASSET_TYPE" readonly>
+          </div>
+        </form>
+      </div>
+
+      <div style="background-color: #FFC9FE;border-radius: 10px; padding: 1rem;margin-bottom: 1rem;">
+        <form [formGroup]="sfsDataFormGroup" class="row g-2 mt-2">
+
+          <div class="col-2">
+            <label>1st Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_1ST_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>1st Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_1ST_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>2nd Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_2ST_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>2nd Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_2ND_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>3rd Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_3RD_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>3rd Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_3RD_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>4th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_4TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>4th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_4TH_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>5th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_5TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>5th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_5TH_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>6th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_6TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>6th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_6TH_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>7th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_7TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>7th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_7TH_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>8th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_8TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>8th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_8TH_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>9th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_9TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>9th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_9TH_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>10th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_10TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>10th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_10TH_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>11th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_11TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>11th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_11TH_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>12th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_12TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>12th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_12TH_AMOUNT_DUE_DATE" required>
+          </div>
+
+          <div class="col-2">
+            <label>13th Amount Due</label>
+            <input class="form-control" type="text" formControlName="v_13TH_AMOUNT_DUE" required>
+          </div>
+
+          <div class="col-2">
+            <label>13th Amount Due Date</label>
+            <input class="form-control" type="date" formControlName="v_13TH_AMOUNT_DUE_DATE" required>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="tab-content">
+    <div *ngIf="selectedTab === 'Property'">
+
+      <div class="shadow" style="background-color: #FFC9FE;border-radius: 10px; padding: 1rem;margin-bottom: 1rem;">
+        <form [formGroup]="UnitDataFormGroup" class="row g-2 mt-2">
+
+          <div class="col-3">
+            <label>Unit Account Number</label>
+            <input class="form-control" type="text" formControlName="v_UNIT_ACCOUNT_NUMBER" readonly>
+          </div>
+
+          <div class="col-2">
+            <label>Name of the Division</label>
+            <input class="form-control" type="text" formControlName="v_DIVISION" readonly>
+          </div>
+
+          <div class="col-5">
+            <label>Scheme Name</label>
+            <input class="form-control" type="text" formControlName="v_SCHEME_NAME" readonly>
+          </div>
+
+          <div class="col-1">
+            <label>Type</label>
+            <input class="form-control" type="text" formControlName="v_TYPE_NAME" readonly>
+          </div>
+
+          <div class="col-1">
+            <label for="unit_type">Unit Type</label>
+            <input class="form-control" type="text" formControlName="v_ASSET_TYPE" readonly>
+          </div>
+        </form>
+      </div>
+
+      <form [formGroup]="PropertyDataFormGroup">
+        <div class="shadow" style="background-color: #FFC9FE;border-radius: 10px; padding: 1rem;margin-bottom: 1rem;">
+          <div class="row g-2 mt-2">
+            <div class="col-6">
+              <label>Allotment File Reference</label>
+              <input class="form-control" type="text" formControlName="v_ALLOTMENT_REF" required>
+            </div>
+
+            <div class="col-6">
+              <label>Current File Reference</label>
+              <input class="form-control" type="text" formControlName="v_CURRENT_FILE_REF" required>
+            </div>
+
+            <div class="col-2">
+              <label>Type Description</label>
+              <input class="form-control" type="text" formControlName="v_TYPE_DESC" required>
+            </div>
+
+            <div class="col-4">
+              <label>Scheme place</label>
+              <input class="form-control" type="text" formControlName="v_SCHEME_PLACE" required>
+            </div>
+
+            <div class="col-2">
+              <label>Total Cost</label>
+              <input class="form-control" type="text" formControlName="total_COST" required>
+            </div>
+
+            <div class="col-4">
+              <label>Total Cost in Words</label>
+              <input class="form-control" type="text" formControlName="total_COST_WORDS" required>
+            </div>
+
+            <div class="col-2">
+              <label>Land Cost</label>
+              <input class="form-control" type="text" formControlName="land_COST" required>
+            </div>
+
+            <div class="col-4">
+              <label>Land Cost in Words</label>
+              <input class="form-control" type="text" formControlName="land_COST_WORDS" required>
+            </div>
+
+            <div class="col-2">
+              <label>Building Cost</label>
+              <input class="form-control" type="text" formControlName="building_COST" required>
+            </div>
+
+            <div class="col-4">
+              <label>Building Cost in Words</label>
+              <input class="form-control" type="text" formControlName="building_COST_WORDS" required>
+            </div>
+
+            <div class="col-2">
+              <label>EMD Receipt No.</label>
+              <input class="form-control" type="text" formControlName="emd_RECEIPT_NO" required>
+            </div>
+
+            <div class="col-2">
+              <label>EMD Paid Date</label>
+              <input class="form-control" type="date" formControlName="emd_PAID_DATE" required>
+            </div>
+
+            <div class="col-2">
+              <label>EMD Paid Amount</label>
+              <input class="form-control" type="text" formControlName="emd_PAID_AMOUNT" required>
+            </div>
+
+            <div class="col-2">
+              <label>Date of handing over</label>
+              <input class="form-control" type="date" formControlName="date_OF_HANDLING" required>
+            </div>
+
+            <div class="col-2">
+              <label>Board Resolution No.</label>
+              <input class="form-control" type="text" formControlName="board_RESOLU_NO" required>
+            </div>
+
+            <div class="col-2">
+              <label>Board Resolution Date</label>
+              <input class="form-control" type="date" formControlName="board_RESOLU_DATE" required>
+            </div>
+
+            <div class="col-2">
+              <label>G.O No.</label>
+              <input class="form-control" type="text" formControlName="go_NO" required>
+            </div>
+
+            <div class="col-2">
+              <label>G.O Date</label>
+              <input class="form-control" type="date" formControlName="go_DATE" required>
+            </div>
+
+            <div class="col-8">
+              <label>Survey No.</label>
+              <input class="form-control" type="text" formControlName="survey_NO" required>
+            </div>
+
+            <div class="col-6">
+              <label>North Boundary</label>
+              <input class="form-control" type="text" formControlName="north_BOUNDARY" required>
+            </div>
+
+            <div class="col-6">
+              <label>East Boundary</label>
+              <input class="form-control" type="text" formControlName="east_BOUNDARY" required>
+            </div>
+
+            <div class="col-6">
+              <label>South Boundary</label>
+              <input class="form-control" type="text" formControlName="south_BOUNDARY" required>
+            </div>
+
+            <div class="col-6">
+              <label>West Boundary</label>
+              <input class="form-control" type="text" formControlName="west_BOUNDARY" required>
+            </div>
+
+            <div class="col-6">
+              <div class="row gx-2">
+                <div class="col-3">
+                  <label>North Scaling</label>
+                  <input class="form-control" type="text" formControlName="north_SCALING" required>
+                </div>
+
+                <div class="col-3">
+                  <label>East Scaling</label>
+                  <input class="form-control" type="text" formControlName="east_SCALING" required>
+                </div>
+
+                <div class="col-3">
+                  <label>South Scaling</label>
+                  <input class="form-control" type="text" formControlName="south_SCALING" required>
+                </div>
+
+                <div class="col-3">
+                  <label>West Scaling</label>
+                  <input class="form-control" type="text" formControlName="west_SCALING" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label>Splay (Corner Measurement )</label>
+              <input class="form-control" type="text" formControlName="splay" required>
+            </div>
+
+            <div class="col-4">
+              <label>Village</label>
+              <input class="form-control" type="text" formControlName="village" required>
+            </div>
+
+            <div class="col-4">
+              <label>Taluk</label>
+              <input class="form-control" type="text" formControlName="taluk" required>
+            </div>
+
+            <div class="col-4">
+              <label>District</label>
+              <input class="form-control" type="text" formControlName="district" required>
+            </div>
+
+            <div class="col-5">
+              <label>Sub Registrar Designaiton</label>
+              <input class="form-control" type="text" formControlName="sub_REG_DESIG" required>
+            </div>
+
+            <div class="col-3">
+              <label>Sub Registrar place</label>
+              <input class="form-control" type="text" formControlName="sub_REG_PLACE" required>
+            </div>
+
+            <div class="col-2">
+              <label>LCS Agreement Date</label>
+              <input class="form-control" type="date" formControlName="lc_AGREE_DATE" required>
+            </div>
+
+            <div class="col-2">
+              <label for="PurposeofDocument">Purpose of Document</label>
+              <select id="PurposeofDocument" class="form-select" formControlName="purpose_OF_DOC">
+                <option selected>Select</option>
+                <option value="Residential">Residential</option>
+                <option value="Commercial">Commercial</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="tab-content">
+    <div *ngIf="selectedTab === 'Allottee'">
+
+      <div class="shadow" style="background-color: #FFC9FE;border-radius: 10px; padding: 1rem;margin-bottom: 1rem;">
+        <form [formGroup]="UnitDataFormGroup" class="row g-2 mt-2">
+
+          <div class="col-3">
+            <label>Unit Account Number</label>
+            <input class="form-control" type="text" formControlName="v_UNIT_ACCOUNT_NUMBER" readonly>
+          </div>
+
+          <div class="col-2">
+            <label>Name of the Division</label>
+            <input class="form-control" type="text" formControlName="v_DIVISION" readonly>
+          </div>
+
+          <div class="col-5">
+            <label>Scheme Name</label>
+            <input class="form-control" type="text" formControlName="v_SCHEME_NAME" readonly>
+          </div>
+
+          <div class="col-1">
+            <label>Type</label>
+            <input class="form-control" type="text" formControlName="v_TYPE_NAME" readonly>
+          </div>
+
+          <div class="col-1">
+            <label for="unit_type">Unit Type</label>
+            <input class="form-control" type="text" formControlName="v_ASSET_TYPE" readonly>
+          </div>
+        </form>
+      </div>
+
+      <form [formGroup]="AllotteeDataFormGroup">
+
+        <div class="shadow" style="background-color: #FFC9FE;border-radius: 10px; padding: 1rem;margin-bottom: 1rem;">
+          <div class="row g-2 mt-2">
+            <div class="col-3">
+              <label>Applicant Name</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-2">
+              <label>Date of Birth</label>
+              <input class="form-control" type="date" formControlName="" readonly>
+            </div>
+
+            <div class="col-1">
+              <label>Age</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Applicant Husband/Wife Name</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Applicant Fathers Name</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Joint Applicant Name</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-2">
+              <label>Date of Birth</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-1">
+              <label>Age</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Joint Applicant Husband/Wife Name</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Joint Applicant Father Name</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Mobile Number</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Email ID</label>
+              <input class="form-control" type="date" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Aadhaar Number</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>PAN Number</label>
+              <input class="form-control" type="date" formControlName="" readonly>
+            </div>
+
+            <div class="col-6">
+              <label>Correspondence Address</label>
+              <textarea class="form-control" style="height: 5rem"></textarea>
+            </div>
+
+            <div class="col-6">
+              <label>Permanent Address</label>
+              <textarea class="form-control" style="height: 5rem"></textarea>
+            </div>
+
+            <div class="col-4">
+              <label>Applicant Monthly Income</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-4">
+              <label>Spouse Monthly Income</label>
+              <input class="form-control" type="date" formControlName="" readonly>
+            </div>
+
+            <div class="col-4">
+              <label>Total Monthly Income</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Name of the Bank</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Account Number</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>IFSC Code</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <div class="col-3">
+              <label>Account Holder Name</label>
+              <input class="form-control" type="text" formControlName="" readonly>
+            </div>
+
+            <h3 class="col-12">Documents View</h3>
+
+            <div class="col-3">
+              <label>Native Certificate</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <label>Birth Certificate</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <label>Aadhaar</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <label>PAN</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <label>Income Certificate</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <label>Proof of Reservation Main Category</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <label>Proof of Reservation Sub Category</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <label>Primary Applicant Signature</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <label>Joint Applicant Signature</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+            <div class="col-3">
+              <label>Applicant Photo</label>
+              <div>
+                <button class="form-control btn download-btn" style="width: 5rem;">View</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+</section>
